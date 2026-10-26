@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">Add Patient</div>
+  <div class="card-body">
+    <form method="post" action="{{ url_for('add') }}" class="row g-3" novalidate>
+      {% include "_fields.html" %}
+      <div class="col-12">
+        <button class="btn btn-primary">Save &amp; Predict</button>
+        <span class="text-muted small ms-2">Glucose &amp; cholesterol in mg/dL, haemoglobin in g/dL.</span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header fw-semibold">Records ({{ patients|length }})</div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr><th>#</th><th>Name</th><th>DOB</th><th>Email</th><th>Glucose</th><th>Hb</th><th>Chol.</th><th>Remarks (AI)</th><th></th></tr>
+      </thead>
+      <tbody>
+      {% for p in patients %}
+        <tr>
+          <td>{{ p.id }}</td><td>{{ p.full_name }}</td><td>{{ p.dob }}</td><td>{{ p.email }}</td>
+          <td>{{ p.glucose|round(1) }}</td><td>{{ p.haemoglobin|round(1) }}</td><td>{{ p.cholesterol|round(1) }}</td>
+          <td class="remarks">{{ p.remarks }}</td>
+          <td class="text-nowrap">
+            <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('edit', pid=p.id) }}">Edit</a>
+            <form class="d-inline" method="post" action="{{ url_for('delete', pid=p.id) }}"
+                  onsubmit="return confirm('Delete {{ p.full_name }}?');">
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="9" class="text-center text-muted py-4">No records yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

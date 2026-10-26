@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-header fw-semibold">Edit Patient #{{ p.id }}</div>
+  <div class="card-body">
+    <form method="post" class="row g-3" novalidate>
+      {% include "_fields.html" %}
+      <div class="col-12">
+        <button class="btn btn-primary">Update</button>
+        <a class="btn btn-link" href="{{ url_for('index') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
